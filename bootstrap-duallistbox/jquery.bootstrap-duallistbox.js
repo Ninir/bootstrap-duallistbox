@@ -32,14 +32,16 @@
     $.fn.bootstrapDualListbox = function(options) {
 
         return this.each(function() {
-            if (!$(this).is("select"))
+            var $this = $(this);
+
+            if (!$this.is("select"))
             {
-                return $(this).find("select").each(function() {
+                return $this.find("select").each(function() {
                     $(this).bootstrapDualListbox();
                 });
             }
 
-            if ($(this).data('duallistbox_generated')) {
+            if ($this.data('duallistbox_generated')) {
                 return this;
             }
 
@@ -115,11 +117,13 @@
                 elements.select2.height(height);
 
                 elements.originalselect.css('display', 'none').find('option').each(function() {
-                    $(this).data('original-index', i++);
-                    $(this).data('_selected', false);
+                    var $this = $(this);
+
+                    $this.data('original-index', i++);
+                    $this.data('_selected', false);
                 });
 
-                if (settings.showfilterinputs === false) {
+                if (!settings.showfilterinputs) {
                     elements.filterinput1.hide();
                     elements.filterinput2.hide();
                 } else {
@@ -139,12 +143,14 @@
                 elements.select2.empty();
 
                 elements.originalselect.find('option').each(function() {
-                    if ($(this).prop('selected')) {
+                    var $this = $(this);
+
+                    if ($this.prop('selected')) {
                         selectedelements++;
-                        elements.select2.append($(this).clone(true).prop('selected', $(this).data('_selected')));
+                        elements.select2.append($this.clone(true).prop('selected', $this.data('_selected')));
                     }
                     else {
-                        elements.select1.append($(this).clone(true).prop('selected', $(this).data('_selected')));
+                        elements.select1.append($this.clone(true).prop('selected', $this.data('_selected')));
                     }
                 });
 
@@ -163,7 +169,7 @@
 
             function refreshinfo()
             {
-                if (settings.infotext === false) {
+                if (!settings.infotext) {
                     return;
                 }
 
@@ -264,14 +270,18 @@
             function saveselections1()
             {
                 elements.select1.find('option').each(function() {
-                    elements.originalselect.find('option').eq($(this).data('original-index')).data('_selected', $(this).prop('selected'));
+                    var $this = $(this);
+
+                    elements.originalselect.find('option').eq($this.data('original-index')).data('_selected', $this.prop('selected'));
                 });
             }
 
             function saveselections2()
             {
                 elements.select2.find('option').each(function() {
-                    elements.originalselect.find('option').eq($(this).data('original-index')).data('_selected', $(this).prop('selected'));
+                    var $this = $(this);
+
+                    elements.originalselect.find('option').eq($this.data('original-index')).data('_selected', $this.prop('selected'));
                 });
             }
 
@@ -283,12 +293,14 @@
                 var regex = new RegExp($.trim(elements.filterinput1.val()), "gi");
 
                 elements.originalselect.find('option').not(':selected').each(function() {
+                    var $this = $(this);
+
                     if (this.text.match(regex) !== null) {
-                        elements.originalselect.find('option').eq($(this).data('original-index')).data('filtered1', false);
-                        elements.select1.append($(this).clone(true).prop('selected', $(this).data('_selected')));
+                        elements.originalselect.find('option').eq($this.data('original-index')).data('filtered1', false);
+                        elements.select1.append($this.clone(true).prop('selected', $this.data('_selected')));
                     }
                     else {
-                        elements.originalselect.find('option').eq($(this).data('original-index')).data('filtered1', true);
+                        elements.originalselect.find('option').eq($this.data('original-index')).data('filtered1', true);
                     }
                 });
 
@@ -303,12 +315,14 @@
                 var regex = new RegExp($.trim(elements.filterinput2.val()), "gi");
 
                 elements.originalselect.find('option:selected').each(function() {
+                    var $this = $(this);
+
                     if (this.text.match(regex) !== null) {
-                        elements.originalselect.find('option').eq($(this).data('original-index')).data('filtered2', false);
-                        elements.select2.append($(this).clone(true).prop('selected', $(this).data('_selected')));
+                        elements.originalselect.find('option').eq($this.data('original-index')).data('filtered2', false);
+                        elements.select2.append($this.clone(true).prop('selected', $this.data('_selected')));
                     }
                     else {
-                        elements.originalselect.find('option').eq($(this).data('original-index')).data('filtered2', true);
+                        elements.originalselect.find('option').eq($this.data('original-index')).data('filtered2', true);
                     }
                 });
 
@@ -325,8 +339,10 @@
             function changeselectionstate(original_index, selected)
             {
                 elements.originalselect.find('option').each(function() {
-                    if ($(this).data('original-index') === original_index) {
-                        $(this).prop('selected', selected);
+                    var $this = $(this);
+
+                    if ($this.data('original-index') === original_index) {
+                        $this.prop('selected', selected);
                     }
                 });
             }
@@ -342,8 +358,10 @@
                 }
 
                 elements.select1.find('option:selected').each(function() {
-                    if (!$(this).data('filtered1')) {
-                        changeselectionstate($(this).data('original-index'), true);
+                    var $this = $(this);
+
+                    if (!$this.data('filtered1')) {
+                        changeselectionstate($this.data('original-index'), true);
                     }
                 });
 
@@ -363,8 +381,9 @@
                 }
 
                 elements.select2.find('option:selected').each(function() {
-                    if (!$(this).data('filtered2')) {
-                        changeselectionstate($(this).data('original-index'), false);
+                    var $this = $(this);
+                    if (!$this.data('filtered2')) {
+                        changeselectionstate($this.data('original-index'), false);
                     }
                 });
 
@@ -384,8 +403,10 @@
                 }
 
                 elements.originalselect.find('option').each(function() {
-                    if (!$(this).data('filtered1')) {
-                        $(this).prop('selected', true);
+                    var $this = $(this);
+
+                    if (!$this.data('filtered1')) {
+                        $this.prop('selected', true);
                     }
                 });
 
@@ -394,6 +415,7 @@
 
             function removeall()
             {
+                saveSelections();
                 if (settings.preserveselectiononmove === 'all') {
                     saveselections1();
                     saveselections2();
@@ -403,8 +425,10 @@
                 }
 
                 elements.originalselect.find('option').each(function() {
-                    if (!$(this).data('filtered2')) {
-                        $(this).prop('selected', false);
+                    var $this = $(this);
+
+                    if (!$this.data('filtered2')) {
+                        $this.prop('selected', false);
                     }
                 });
 
